@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Поиск фильмов</title>
+    
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+   
+    <div class="header">
+        <h1>🎬 Поиск фильмов</h1>
+        <p>База данных содержит {{ total_films }} фильмов</p>
+    </div>
+
+<div class="admin-links">
+    <a href="/admin/films/film/" class="admin-btn">📋 Все фильмы</a>
+    <a href="/admin/films/film/add/" class="admin-btn">➕ Добавить фильм</a>
+    <a href="/admin/" class="admin-btn">⚙️ Админ-панель</a>
+</div>
+
+    
+    <div class="search-form">
+        <form method="get">
+            <div class="search-container">
+                <input type="text" name="q" value="{{ query }}" 
+                       placeholder="Введите название, актера, режиссера или жанр..." 
+                       class="search-input">
+                <button type="submit" class="search-btn">🔍 Найти</button>
+            </div>
+        </form>
+    </div>
+
+    
+    {% if query %}
+        <div class="results-count">
+            {% if results %}
+                Найдено фильмов: {{ results|length }}
+            {% else %}
+                По запросу "{{ query }}" ничего не найдено
+            {% endif %}
+        </div>
+
+        
+        {% for film in results %}
+        <div class="film-card">
+            <div class="film-title">{{ film.title }} ({{ film.year }})</div>
+            <div class="film-info"><strong>Режиссер:</strong> {{ film.director }}</div>
+            <div class="film-info"><strong>Актеры:</strong> {{ film.actors }}</div>
+            <div class="film-info"><strong>Жанр:</strong> {{ film.genre }}</div>
+            {% if film.description %}
+            <div class="film-info"><strong>Описание:</strong> {{ film.description }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        {% if not results %}
+        <div class="no-results">
+            😔 Попробуйте изменить запрос или использовать другие ключевые слова
+        </div>
+        {% endif %}
+    {% endif %}
+       
+
+
+   <script src="{% static 'js/script.js' %}"></script>
+
+<div style="text-align: center; margin: 20px 0;">
+    <form method="get" action="">
+        <input type="hidden" name="random" value="true">
+        <button type="submit" style="
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        ">
+            🎲 Случайный фильм
+        </button>
+    </form>
+</div>
+
+
+{% if random_film %}
+<div class="random-film-result" style="
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-left: 4px solid #667eea;
+">
+    <h3 style="color: #333; margin-bottom: 15px;">🎲 Вам может понравиться:</h3>
+    
+    <div class="film-card" style="
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+    ">
+        <div class="film-title" style="
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        ">{{ random_film.title }} ({{ random_film.year }})</div>
+        
+        <div class="film-info" style="color: #555; margin: 5px 0;">
+            <strong>Режиссер:</strong> {{ random_film.director }}
+        </div>
+        
+        <div class="film-info" style="color: #555; margin: 5px 0;">
+            <strong>Актеры:</strong> {{ random_film.actors }}
+        </div>
+        
+        <div class="film-info" style="color: #555; margin: 5px 0;">
+            <strong>Жанр:</strong> {{ random_film.genre }}
+        </div>
+        
+        {% if random_film.description %}
+        <div class="film-info" style="color: #555; margin: 5px 0;">
+            <strong>Описание:</strong> {{ random_film.description }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+</body>
+</html>
