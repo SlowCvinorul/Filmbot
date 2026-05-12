@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   filmbot:
-    image: ghcr.io/slowcvinorul/filmbot:latest
+    image: ghcr.io/slowcvinorul/filmbot:main   # ← вот здесь main вместо latest
     container_name: film_bot_container
     ports:
       - "8000:8000"
     volumes:
-      - sqlite_data:/app/film_bot
+      - sqlite_data:/app
     restart: unless-stopped
 
   watchtower:
