@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  filmbot:
+    build: .
+    container_name: film_bot_container
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - sqlite_data:/app/db.sqlite3
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=film_bot.settings
+volumes:
+  sqlite_data:
