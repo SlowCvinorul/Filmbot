@@ -2,16 +2,12 @@ version: '3.8'
 
 services:
   filmbot:
-    build: .
+    image: ghcr.io/slowcvinorul/filmbot:latest
     container_name: film_bot_container
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
-      - sqlite_data:/app/db.sqlite3
-    environment:
-      - PYTHONUNBUFFERED=1
-      - DJANGO_SETTINGS_MODULE=film_bot.settings
+      - sqlite_data:/app/film_bot
     restart: unless-stopped
 
   watchtower:
